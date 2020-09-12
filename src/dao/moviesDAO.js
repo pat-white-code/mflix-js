@@ -61,6 +61,14 @@ export default class MoviesDAO {
       // and _id. Do not put a limit in your own implementation, the limit
       // here is only included to avoid sending 46000 documents down the
       // wire.
+      // countries = ["Italy", "Germany"]
+      let filter = {
+        countries: {
+          $in: ["USA", "Germany"],
+        },
+      }
+      let proj = { _id: 0, title: 1, countries: 1 }
+
       cursor = await movies.find().limit(1)
     } catch (e) {
       console.error(`Unable to issue find command, ${e}`)
@@ -296,9 +304,9 @@ export default class MoviesDAO {
       const pipeline = [
         {
           $match: {
-            _id: ObjectId(id)
-          }
-        }
+            _id: ObjectId(id),
+          },
+        },
       ]
       return await movies.aggregate(pipeline).next()
     } catch (e) {
