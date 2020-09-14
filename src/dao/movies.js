@@ -62,19 +62,14 @@ export default class MoviesDAO {
       // here is only included to avoid sending 46000 documents down the
       // wire.
 
-      // let filter = {
-      //   countries: {
-      //     $in: ["Italy", "Germany"],
-      //   }
-      // }
-      // let proj = { "title": 1}
-
-      cursor = await movies.find(
-        {
-          countries: { $in: countries },
+      let filter = {
+        countries: {
+          $in: countries,
         },
-        { _id: 1, title: 1 },
-      )
+      }
+      let proj = { title: 1 }
+
+      cursor = await movies.find().limit(1)
     } catch (e) {
       console.error(`Unable to issue find command, ${e}`)
       return []
